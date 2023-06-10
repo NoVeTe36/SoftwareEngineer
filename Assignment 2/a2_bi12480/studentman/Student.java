@@ -1,4 +1,4 @@
-package a1_bi12480;
+package a2_bi12480.studentman;
 
 import utils.AttrRef;
 import utils.DOpt;
@@ -39,8 +39,6 @@ public class Student implements Comparable<Student> {
     @DomainConstraint(type = "String", mutable = true, optional = false, length = 100)
     private String address;
 
-    // methods
-
     /**
      * @effects
      * if i, n, p, a are valid
@@ -48,7 +46,7 @@ public class Student implements Comparable<Student> {
      * else
      * throws NotPossibleException
      */
-     
+    @DOpt(type = OptType.Constructor)
     public Student(@AttrRef("id") int i, @AttrRef("name") String n, @AttrRef("phoneNumber") String p, @AttrRef("address") String a) throws NotPossibleException {        
         if (!validateId(i)) {
             throw new NotPossibleException("Student.Student: invalid id");
@@ -170,6 +168,17 @@ public class Student implements Comparable<Student> {
     }
 
     /**
+     * @effects <pre>
+     *   if <id, n, p, a> is a valid tuple
+     *     return true
+     *   else
+     *     return false</pre>
+     */
+    private boolean validate(int id, String n, String p, String a){
+        return validateId(id) && validatePhoneNumber(p) && validateName(n) && validateAddress(a);
+    }
+
+    /**
      * @effects
      * if n is valid
      * name = n
@@ -240,4 +249,35 @@ public class Student implements Comparable<Student> {
         return "Student [id=" + id + ", name=" + name + ", phoneNumber=" + phoneNumber + ", address=" + address + "]";
     }
     
+    @Override   
+    public boolean equals(Object o) {
+        if (o instanceof Student){
+            if (this.id == ((Student) o).id && this.name.equals(((Student) o).name) && this.phoneNumber.equals(((Student) o).phoneNumber) && this.address.equals(((Student) o).address)){
+                return true;
+            }
+            else
+                return false;
+        }
+        else 
+            return false;
+    }
+
+    /**
+     * @effects
+     * return the html string of this Student
+     */
+    public String toHtmlDoc() {
+        return "<html>\n" + "<head><title>Student: " + name + "</title></head>\n" + "<body>\n" + id + " " + name + " " + phoneNumber + " " + address + "\n" + "</body>\n" + "</html>";
+    }
+
+    /**
+     * @effects
+     * if this satisfies its invariants
+     *      return true
+     * else
+     *     return false
+     */
+    public boolean repOK() {
+        return validate(id, name, phoneNumber, address);
+    }
 }

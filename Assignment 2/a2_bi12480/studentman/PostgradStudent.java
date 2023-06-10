@@ -1,11 +1,11 @@
-package a1_bi12480;
+package a2_bi12480.studentman;
+
 import utils.AttrRef;
 import utils.DOpt;
 import utils.DomainConstraint;
 import utils.NotPossibleException;
 import utils.OptType;
 import static java.lang.Math.pow;
-
 
 /**
  * @overview PostgradStudent is a student who has been graduated
@@ -30,7 +30,14 @@ public class PostgradStudent extends Student {
     @DomainConstraint(type = "Float", mutable = true, optional = false, min = 0.0, max = 4.0)
     private float gpa;
 
-    // constructor
+    /**
+     * @effects
+     * if id, n, a, p, g are valid
+     *      initialize this as <i, n, p, a, g>
+     * else
+     *      throws NotPossibleException 
+     */
+    @DOpt(type = OptType.Constructor)
     public PostgradStudent(@AttrRef("id") int i, @AttrRef("name") String n, @AttrRef("phoneNumber") String p, @AttrRef("address") String a, @AttrRef("gpa") float g) throws NotPossibleException
     {
         super(i, n, p, a);
@@ -77,8 +84,38 @@ public class PostgradStudent extends Student {
      * return false </pre>
      */
     @DOpt(type = OptType.Mutator) @AttrRef("gpa")
-    private boolean validateGpa(float g) {
-        return g >= 0.0 && g <= 4.0;
+    protected boolean validateGpa(float g) {
+        if(g >= 0.0 && g <= 4.0)
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * @effects
+     * if this satisfies rep invariant
+     *      return true
+     * else
+     *      return false
+     */
+    public boolean repOK()
+    {
+        return validate(super.getId(), gpa);
+    }
+
+    /**
+     * @effects
+     * if id, gpa are valid
+     *      return True
+     * else
+     *      return False
+     */
+
+    protected boolean validate(int id, float gpa){
+        if(validateId(id) && validateGpa(gpa))
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -95,5 +132,26 @@ public class PostgradStudent extends Student {
             return true;
         else
             return false;
+    }
+
+    /**
+     * @effects
+     * if name is valid
+     *      return True
+     * else      
+     *      return False
+     */
+
+    @Override
+    public String toHtmlDoc(){
+        return "<html>\n"
+                + "<head><title>Student: " + "</title></head>\n"
+                + "<body>\n"
+                + getName() + " "
+                + getId() + " " 
+                + getPhoneNumber() + " " 
+                + getAddress() + " " 
+                + getGpa() + "\n"
+                + "</body></html>";
     }
 }

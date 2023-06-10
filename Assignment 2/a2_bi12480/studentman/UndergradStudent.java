@@ -1,11 +1,8 @@
-package a1_bi12480;
+package a2_bi12480.studentman;
 
-import utils.AttrRef;
-import utils.NotPossibleException;
+
 import static java.lang.Math.pow;
-// import utils.DOpt;
-// import utils.DomainConstraint;
-// import utils.OptType;
+import utils.*;
 
 /**
  * @overview UndergradStudent is a student who has not been graduated
@@ -45,5 +42,33 @@ public class UndergradStudent extends Student {
             return true;
         else
             return false;
+    }
+
+
+    /**
+     * @effects 
+     * return UndergradStudent object
+     */
+    @Override
+    public String toString(){
+        return "UndergradStudent(" + getId() + ", " + getName() + ", " + getPhoneNumber() + ", " + getAddress() + ")";
+    }
+
+    /**
+     * @effects
+     * if name is valid
+     *      return True
+     * else 
+     *      return false
+     */
+    @Override
+    public String toHtmlDoc(){
+        return "<html>\n" +
+                "<head><title>Student: " + "</title></head>\n" 
+                + "<body>\n" + getName() 
+                + " " + getId() 
+                + " " + getName() 
+                + " " + getPhoneNumber() 
+                + " " + getAddress() + "\n" +"</body></html>";
     }
 }
